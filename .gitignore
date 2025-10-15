@@ -1,0 +1,7 @@
+## .gitignore file
+
+# Environment files
+.env
+
+# IDE files
+.idea
