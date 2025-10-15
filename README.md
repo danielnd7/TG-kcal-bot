@@ -147,6 +147,3 @@ Build a Telegram bot that lets you log meals (with kcal values) and automaticall
 * **Version Control:** Git + GitHub
 * **Scheduling:** `apscheduler` or Python `asyncio` timers
 
----
-
-Would you like me to convert this into a **Trello / Notion board structure** (columns: To Do, In Progress, Done) or into a **Markdown project plan** file (`PROJECT_PLAN.md`) you can include in your repo?
