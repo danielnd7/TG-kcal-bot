@@ -24,10 +24,10 @@ Build a Telegram bot that lets you log meals (with kcal values) and automaticall
 
 ### 1.2 Environment Setup
 
-* [ ] Install Python and necessary libraries
-* [ ] Create virtual environment
-* [ ] Set up Telegram Bot token via [BotFather](https://t.me/BotFather)
-* [ ] Initialize Git repository for version control
+* [x] Install Python and necessary libraries (in venv)
+* [x] Create virtual environment
+* [x] Set up Telegram Bot token via [BotFather](https://t.me/BotFather)
+* [x] Initialize Git repository for version control
 * [ ] Create `.env` file for sensitive credentials
 
 ---
@@ -38,7 +38,7 @@ Build a Telegram bot that lets you log meals (with kcal values) and automaticall
 
 * [ ] Connect to Telegram API
 * [ ] Create a simple `/start` handler to verify connection
-* [ ] Implement basic logging
+* [ ] Implement basic logging 
 
 ### 2.2 Data Model
 
