@@ -1,16 +1,25 @@
-# This is a sample Python script.
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+TOKEN = 'hahaha im not that stupid'
 
+# async def defines a coroutine.
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Hello! Send me anything, and I'll print it in the console.")
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = update.message.text
+    print("Received message:", text)  # <-- this prints the message in your console
+    await update.message.reply_text(f"You said: {text}")
 
+if __name__ == "__main__":
+    app = ApplicationBuilder().token(TOKEN).build()
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+    # Command handler for /start
+    app.add_handler(CommandHandler("start", start))
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    # Message handler for any text message
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
+
+    # Run the bot with long polling
+    app.run_polling()
