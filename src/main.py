@@ -1,7 +1,13 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
+from os import getenv
+from dotenv import load_dotenv
 
-TOKEN = 'hahaha im not that stupid'
+# Load variables from .env file
+load_dotenv()
+
+# Access the token securely
+TOKEN = getenv("TELEGRAM_BOT_TOKEN")
 
 # async def defines a coroutine.
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
