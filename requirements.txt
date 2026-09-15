@@ -1,4 +1,3 @@
 # Requirements for the tg-kkal-bot project
-# Add your dependencies below
 python-telegram-bot
 python-dotenv

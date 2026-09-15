@@ -7,3 +7,9 @@
 .idea
 
 .venv
+
+# My own files
+ideas.md
+
+# db files
+*.db
