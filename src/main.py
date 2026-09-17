@@ -14,7 +14,7 @@ TOKEN = getenv("TELEGRAM_BOT_TOKEN")
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
-    print("Received message:", text)  # <-- this prints the message in your console
+    print(f"Received msg from {update.effective_user.id}: {text}")  # <-- this prints the message in your console
     await update.message.reply_text(f"You said: {text}")
 
 

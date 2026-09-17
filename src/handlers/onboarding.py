@@ -9,7 +9,7 @@ from telegram.ext import (
 )
 import db
 
-WAITING_CALORIES, WAITING_PROTEIN = range(2)
+WAITING_CALORIES, WAITING_PROTEIN, WAITING_FAT, WAITING_CARBS = range(4)
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
@@ -46,8 +46,8 @@ async def process_calories(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     # Записываем значение во временный контекст пользователя
     context.user_data["calorie_goal"] = int(text)
 
-    await update.message.reply_text("Perfect! Now please entr the protein goal:")
-    # Переходим к следующему состоянию
+    await update.message.reply_text("Perfect! Now please enter the PROTEIN goal:")
+
     return WAITING_PROTEIN
 
 
@@ -60,15 +60,51 @@ async def process_protein(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
     context.user_data["protein_goal"] = int(text)
 
+    await update.message.reply_text("Perfect! Now please enter the FAT goal:")
+
+    return WAITING_FAT
+
+
+async def process_fat(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    text = update.message.text
+    if not text.isdigit():
+        await update.message.reply_text("Not an integer!")
+        return WAITING_FAT
+
+    context.user_data["fat_goal"] = int(text)
+
+    await update.message.reply_text("Perfect! Now please enter the CARBS goal:")
+
+    return WAITING_CARBS
+
+async def process_carbs(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    text = update.message.text
+    if not text.isdigit():
+        await update.message.reply_text("Not an integer!")
+        return WAITING_CARBS
+
+    context.user_data["carb_goal"] = int(text)
+
     print("Goal set: \nCalories: ", context.user_data["calorie_goal"], "\nProtein: ", context.user_data["protein_goal"])
     print("storing to the database......")
 
-
-
     await update.message.reply_text(
-        f"Profile saved\nGoals: {context.user_data["calorie_goal"]} calories, {context.user_data["protein_goal"]}g protein."
+        f"Profile saved!\n"
+        f"Goals:\n"
+        f"{context.user_data["calorie_goal"]} calories\n"
+        f"{context.user_data["protein_goal"]}g of protein.\n"
+        f"{context.user_data["fat_goal"]}g of fat.\n"
+        f"{context.user_data["carb_goal"]}g of carbs."
     )
-    # Завершаем сценарий — бот выходит из режима ожидания
+    context.user_data.clear()
+
+    return ConversationHandler.END
+
+
+async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    context.user_data.clear()
+    await update.message.reply_text("Action cancelled.")
+
     return ConversationHandler.END
 
 
@@ -81,7 +117,13 @@ def get_onboarding_handler() -> ConversationHandler:
             ],
             WAITING_PROTEIN: [
                 MessageHandler(filters.TEXT & ~filters.COMMAND, process_protein)
+            ],
+            WAITING_FAT: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, process_fat)
+            ],
+            WAITING_CARBS: [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, process_carbs)
             ]
         },
-        fallbacks=[],
+        fallbacks=[CommandHandler("cancel", cancel)],
     )
