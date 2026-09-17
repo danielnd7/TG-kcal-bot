@@ -13,7 +13,10 @@ ideas.md
 
 # db files
 *.db
+*.db-*
 
 # pycache
 __pycache__/
+
+
 
