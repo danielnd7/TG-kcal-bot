@@ -2,6 +2,29 @@ import sqlite3
 
 DB_PATH = "bot.db"
 
+
+def get_connection():
+    conn = sqlite3.connect(DB_PATH) # opens connection to the file .db
+    conn.row_factory = sqlite3.Row  # Changes the returned row type from a standard Python tuple to a sqlite3.Row object
+    return conn
+
+def get_user(user_id: int) -> dict | None:
+    """Returns user record as a dict, or None if user does not exist."""
+    with get_connection() as conn:
+        row = conn.execute(
+            "SELECT * FROM users WHERE user_id = ?",
+            (user_id,)
+        ).fetchone()
+        return dict(row) if row else None
+
+def create_user(user_id: int):
+    """Inserts a new user record with empty goals (NULL)."""
+    with get_connection() as conn:
+        conn.execute(
+            "INSERT OR IGNORE INTO users (user_id) VALUES (?)",
+            (user_id,)
+        )
+
 def init_db():
     """Initializes the database and creates required tables if they don't exist."""
     with sqlite3.connect(DB_PATH) as conn:
